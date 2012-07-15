@@ -14,5 +14,5 @@ Gem::Specification.new do |gem|
   gem.name          = "threequel"
   gem.require_paths = ["lib"]
   gem.version       = Threequel::VERSION
-  gem.add_dependency "timer", "~> 0.1.7"
+  # gem.add_dependency "timer", "~> 0.1.7"
 end

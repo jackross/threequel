@@ -1,22 +1,32 @@
 module Threequel
   module Commandant
     class SQLStatement
-      extend Logging
-      add_logging_to :execute_on
+      include Logging
 
-      attr_reader :sql, :name
+      attr_reader :sql, :command, :name, :row_affected
 
-      def initialize(sql, name)
-        @sql, @name = sql, name
+      def initialize(sql, name, command)
+        @sql, @name, @command = sql, name, command
       end
 
       def execute_on(connection)
-        # connection.send(:do_execute, @sql)
-        puts "execute_on for #{@name}"
+        run_callbacks :execute do
+          begin
+            # connection.send(:do_execute, @sql)
+            puts "execute_on for #{@name}"
+            23
+          rescue Exception => e
+            puts "Error while executing '#{@name}': '#{e.message}'!"
+          end
+        end
       end
 
       def formatted_sql
         "#{@sql}\nGO\n\n"
+      end
+
+      def log_data
+        {:sql => @sql, :command => @command}
       end
 
     end    

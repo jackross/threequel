@@ -3,7 +3,7 @@ module Threequel
     extend self
 
     def sanitize_sql(sql)
-      sql.split("\nGO").map(&:chomp).map(&:strip).reject!(&:empty?).compact
+      sql.split("\nGO").map(&:chomp).map(&:strip).reject(&:empty?).compact
     end
 
   end

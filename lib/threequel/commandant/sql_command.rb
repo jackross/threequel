@@ -1,8 +1,8 @@
 module Threequel
   module Commandant
     class SQLCommand
-      extend Logging
-      add_logging_to :execute_on
+      # extend Logging
+      # add_logging_to :execute_on
 
       attr_reader :sql, :name
 
@@ -15,13 +15,13 @@ module Threequel
       end
 
       def statements
-        @statements ||= sanitized_sql.map.with_index{|statement, i| SQLStatement.new(statement, "#{@name}[statement#{i}]")}
+        @statements ||= sanitized_sql.map.with_index{|statement, i| SQLStatement.new(statement, "#{@name}[statement#{i}]", @name)}
       end
 
       def execute_on(connection)
-        # puts "-- Starting SQL Execution for: #{@name} at #{Time.now}"
+        puts "-- Starting SQL Execution for: #{@name} at #{Time.now}"
         statements.each{|statement| statement.execute_on connection}
-        # puts "-- Finishing SQL Execution for: #{@name} at #{Time.now}\n"
+        puts "-- Finishing SQL Execution for: #{@name} at #{Time.now}\n"
       end
 
       def formatted_sql
