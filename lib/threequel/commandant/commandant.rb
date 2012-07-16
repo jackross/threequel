@@ -1,4 +1,3 @@
-# require_relative "threequel/commandant/command_hash"
 module Threequel
   module Commandant
     extend ActiveSupport::Concern

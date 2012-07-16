@@ -7,7 +7,9 @@ module Threequel
 
       def initialize(sql_command_file, model_name = 'Anonymous')
         @sql_command_file = sql_command_file
-        Hash[*(code.scan(/^--#\s:(\w*$)(.*?)^--#/m).flatten)].each{|command, sql| self[command.to_sym] = SQLCommand.new(sql, "#{model_name}.#{command}")}
+        Hash[*(code.scan(/^--#\s:(\w*$)(.*?)^--#/m).flatten)].each do |command, sql|
+          self[command.to_sym] = SQLCommand.new(sql, "#{model_name}.#{command}", :log_to_db => true)
+        end
       end
 
       def code

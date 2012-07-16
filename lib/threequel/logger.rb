@@ -16,8 +16,8 @@ module Threequel
           puts "-- Starting execution of #{name} at #{started_at}\n"
           log_entry.log_execution_for("Executing", timer.attributes)
           @rows_affected = yield
-        rescue Exception => e
-          puts "Error while executing '#{name}': '#{e.message}'!"
+        rescue => ex
+          puts "Error while executing '#{name}': '#{ex.message}'!"
         end
       end
       log_entry.log_execution_for("Finished", timer.attributes.merge(:rows_affected => @rows_affected))

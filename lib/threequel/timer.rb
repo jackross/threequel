@@ -10,10 +10,8 @@ module Threequel
         start
         yield
         stop
-      rescue Exception => e
-        puts "Error while executing '#{name}': '#{e.message}'!"
-      ensure
-        puts "\n"
+      rescue => ex
+        puts "Error while executing '#{name}': '#{ex.message}'!"
       end
     end
 

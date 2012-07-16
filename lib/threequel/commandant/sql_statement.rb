@@ -1,22 +1,23 @@
 module Threequel
   module Commandant
     class SQLStatement
-      include Logging
 
-      attr_reader :sql, :command, :name, :row_affected
+      # extend ActiveModel::Callbacks
+
+      attr_reader :sql, :command, :name, :rows_affected
 
       def initialize(sql, name, command)
         @sql, @name, @command = sql, name, command
       end
 
       def execute_on(connection)
-        run_callbacks :execute do
-          begin
-            # connection.send(:do_execute, @sql)
-            puts "execute_on for #{@name}"
-            23
-          rescue Exception => e
-            puts "Error while executing '#{@name}': '#{e.message}'!"
+        rows_affected = begin
+          connection.send(:do_execute, @sql)
+          # puts "execute_on for #{@name}"
+          # 23
+        rescue => ex
+          nil.tap do |r|
+            puts "Error while executing '#{@name}': '#{ex.message}'!"
           end
         end
       end
@@ -25,7 +26,7 @@ module Threequel
         "#{@sql}\nGO\n\n"
       end
 
-      def log_data
+      def attributes
         {:sql => @sql, :command => @command}
       end
 
