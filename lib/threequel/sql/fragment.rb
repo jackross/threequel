@@ -8,15 +8,18 @@ module Threequel
 
       def initialize(sql)
         @sql = sql
+        sanitize!
+      end
+
+      def sanitize!
+        split_on_terminator!
+        chomp_endings!
+        strip_whitespace!
+        remove_empty_statements!
       end
 
       def statements
-        @statments ||= self.tap do |sql|
-          sql.split_on_terminator!
-          sql.chomp_endings!
-          sql.strip_whitespace!
-          sql.remove_empty_statements!
-        end
+        self
       end
       
       def split_on_terminator!
