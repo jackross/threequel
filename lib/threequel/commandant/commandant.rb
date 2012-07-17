@@ -14,7 +14,7 @@ module Threequel
       end
 
       def sql_command_hash
-        @sql_command_hash ||= SQLCommandHash.new(sql_command_file_path, self.name)
+        @sql_command_hash ||= SQL::CommandHash.new(sql_command_file_path, self.name)
       end
 
       def sql_command_for(method)

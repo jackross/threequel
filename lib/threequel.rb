@@ -1,14 +1,16 @@
 require "threequel/version"
-require "threequel/sql_utils"
+require "threequel/sql/utils"
+require "threequel/sql/fragment"
 require "threequel/timer"
-require "threequel/logger"
 require "threequel/log_entry"
-require "threequel/commandant/logging"
+require "threequel/logger"
+require "threequel/logging"
+require "threequel/sql/statement"
+require "threequel/sql/command"
+require "threequel/sql/command_hash"
 require "threequel/commandant/commandant"
-require "threequel/commandant/sql_statement"
-require "threequel/commandant/sql_command"
-require "threequel/commandant/sql_command_hash"
 
 module Threequel
   # Your code goes here...
+  STATEMENT_TERMINATOR = "\nGO"
 end

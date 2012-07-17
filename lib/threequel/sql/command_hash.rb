@@ -1,6 +1,6 @@
 module Threequel
-  module Commandant
-    class SQLCommandHash < Hash
+  module SQL
+    class CommandHash < Hash
       attr_reader :sql_command_file
       alias :sql_class_methods :keys
       # alias :sql_commands :values
@@ -8,7 +8,7 @@ module Threequel
       def initialize(sql_command_file, model_name = 'Anonymous')
         @sql_command_file = sql_command_file
         Hash[*(code.scan(/^--#\s:(\w*$)(.*?)^--#/m).flatten)].each do |command, sql|
-          self[command.to_sym] = SQLCommand.new(sql, "#{model_name}.#{command}", :log_to_db => true)
+          self[command.to_sym] = SQL::Command.new(sql, "#{model_name}.#{command}", :log_to_db => true)
         end
       end
 

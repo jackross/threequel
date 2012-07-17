@@ -1,6 +1,6 @@
 module Threequel
-  module Commandant
-    class SQLStatement
+  module SQL
+    class Statement
 
       # extend ActiveModel::Callbacks
 
@@ -12,9 +12,9 @@ module Threequel
 
       def execute_on(connection)
         rows_affected = begin
-          connection.send(:do_execute, @sql)
-          # puts "execute_on for #{@name}"
-          # 23
+          # connection.send(:do_execute, @sql)
+          puts "execute_on for #{@name}"
+          23
         rescue => ex
           nil.tap do |r|
             puts "Error while executing '#{@name}': '#{ex.message}'!"

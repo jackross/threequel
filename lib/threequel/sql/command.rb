@@ -1,6 +1,6 @@
 module Threequel
-  module Commandant
-    class SQLCommand
+  module SQL
+    class Command
 
       attr_reader :sql, :name
 
@@ -10,13 +10,13 @@ module Threequel
       end
 
       def sanitized_sql
-        Threequel::SQLUtils.sanitize_sql(@sql)
+        SQL::Utils.sanitize_sql(@sql)
       end
 
       def statements
         @statements ||= sanitized_sql.map.with_index do |statement, i|
-          SQLStatement.new(statement, "#{@name}[statement#{i}]", @name).tap do |s|
-            s.extend(Logging) if @log_to_db
+          SQL::Statement.new(statement, "#{@name}[statement#{i}]", @name).tap do |s|
+            s.extend(Threequel::Logging) if @log_to_db
           end
         end
       end
