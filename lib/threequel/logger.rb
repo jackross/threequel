@@ -25,5 +25,3 @@ module Threequel
     end
   end
 end
-
-

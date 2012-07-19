@@ -2,19 +2,18 @@ module Threequel
   module SQL
     class Statement
 
-      # extend ActiveModel::Callbacks
+      attr_reader :sql, :name, :rows_affected
+      attr_accessor :command_name
 
-      attr_reader :sql, :command, :name, :rows_affected
-
-      def initialize(sql, name, command)
-        @sql, @name, @command = sql, name, command
+      def initialize(sql, name, command_name = nil, opts = {})
+        @sql, @name, @command_name = sql, name, command_name
+        yield self if block_given?
       end
 
       def execute_on(connection)
         rows_affected = begin
-          # connection.send(:do_execute, @sql)
-          puts "execute_on for #{@name}"
-          23
+          connection.send(:do_execute, @sql)
+          # puts "execute_on for #{@name}"; 23
         rescue => ex
           nil.tap do |r|
             puts "Error while executing '#{@name}': '#{ex.message}'!"
@@ -23,11 +22,11 @@ module Threequel
       end
 
       def formatted_sql
-        "#{@sql}\nGO\n\n"
+        "#{@sql}\nGO\n"
       end
 
       def attributes
-        {:sql => @sql, :command => @command}
+        {:sql => formatted_sql, :command => @command_name, :statement => @name}
       end
 
     end    

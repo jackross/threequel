@@ -22,6 +22,10 @@ describe Threequel::Timer do
       subject.stop.must_be_instance_of(Time)
     end
 
+    it "must have a duration" do
+      subject.must_respond_to(:duration)
+    end
+
   end
 
 end

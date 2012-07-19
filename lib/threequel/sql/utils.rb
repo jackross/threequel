@@ -2,8 +2,8 @@ module Threequel
   module SQL
     module Utils
 
-      def self.sanitize_sql(sql)
-        Threequel::SQL::Fragment.sanitize(sql)
+      def self.sanitized_sql(unsanitized_sql)
+        Threequel::SQL::StatementArray.new(unsanitized_sql).sql
       end
 
     end
