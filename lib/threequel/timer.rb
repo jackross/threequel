@@ -20,13 +20,13 @@ module Threequel
 
     def start
       @finished_at = nil
-      @started_at = Time.now
       @state = :executing
+      @started_at = Time.now
     end
 
     def stop
-      @finished_at = Time.now
       @state = :finished
+      @finished_at = Time.now
     end
 
     def duration

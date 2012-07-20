@@ -9,7 +9,7 @@ module Threequel
       @rows_affected = -1
     end
     delegate :started_at, :finished_at, :duration, :state, :clock, :to => :@timer
-    delegate :attributes, :to => :@timer, :prefix => true
+    delegate :attributes, :to => :@timer, :prefix => :timer
 
     def log(name, log_data = {})
       log_entry = Threequel::LogEntry.new(log_data.merge(:name => name))
