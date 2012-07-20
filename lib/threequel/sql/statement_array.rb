@@ -3,15 +3,10 @@ module Threequel
     class StatementArray < Array
 
       def initialize(unsanitized_sql, name = 'Anonymous SQL Block', opts = {})
-        @unsanitized_sql, @name, @opts = unsanitized_sql, name, opts
-        self.sanitize!
-      end
-
-      def sanitize!
-        split_on_terminator!
-        chomp_endings!
-        strip_whitespace!
-        remove_empty_statements!
+        @unsanitized_sql, @name = unsanitized_sql, name
+        @opts = opts.reverse_merge(default_opts)
+        @statement_terminator = @opts[:statement_terminator]
+        setup!
       end
 
       def statements
@@ -23,11 +18,20 @@ module Threequel
       end
 
       def sql
-        self.clone.push("").join("#{Threequel::STATEMENT_TERMINATOR}\n\n")
+        self.clone.push("").join("#{@statement_terminator}\n\n")
       end
       
+      def inspect
+        statements
+      end
+
+      private
+      def default_opts
+        { :statement_terminator => Threequel::STATEMENT_TERMINATOR }
+      end
+
       def split_on_terminator!
-        @unsanitized_sql.split(Threequel::STATEMENT_TERMINATOR).each.with_index{|s, i| self[i] = s}
+        @unsanitized_sql.split(@statement_terminator).each.with_index{|s, i| self[i] = s}
       end
 
       def chomp_endings!
@@ -42,9 +46,13 @@ module Threequel
         self.reject!(&:empty?).compact!
       end
 
-      def inspect
-        statements
+      def setup!
+        split_on_terminator!
+        chomp_endings!
+        strip_whitespace!
+        remove_empty_statements!
       end
+
     end
   end
 end

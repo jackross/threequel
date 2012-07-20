@@ -1,27 +1,43 @@
 module Threequel
   class Logger
-    attr_reader :timer
 
     def initialize(opts = {})
-      @print_output  = opts.delete(:print_output)
+      @opts          = opts.reverse_merge(default_opts)
+      @print_output  = @opts[:print_output]
+      @log_to_db     = @opts[:log_to_db]
       @timer         = Threequel::Timer.new
       @rows_affected = -1
     end
-    delegate :started_at, :finished_at, :duration, :to => :timer
+    delegate :started_at, :finished_at, :duration, :state, :clock, :to => :@timer
+    delegate :attributes, :to => :@timer, :prefix => true
 
     def log(name, log_data = {})
       log_entry = Threequel::LogEntry.new(log_data.merge(:name => name))
-      timer.measure(name) do
-        begin
-          puts "-- Starting execution of #{name} at #{started_at}\n"
-          log_entry.log_execution_for("Executing", timer.attributes)
-          @rows_affected = yield
-        rescue => ex
-          puts "Error while executing '#{name}': '#{ex.message}'!"
-        end
+      result = clock(name) do
+        print_output_for name
+        log_to_db_with log_entry
+        yield
       end
-      log_entry.log_execution_for("Finished", timer.attributes.merge(:rows_affected => @rows_affected))
-      puts "-- Finishing execution of #{name} at #{finished_at} in #{duration} seconds"
+      log_to_db_with log_entry, result
+      print_output_for name
+    end
+
+    private
+    def default_opts
+      { :log_to_db => true, :print_output => true }
+    end
+
+    def print_output_for(name)
+      puts case state
+        when :executing
+          "-- Starting execution of #{name} at #{started_at}\n"
+        when :finished
+          "-- Finishing execution of #{name} at #{finished_at} in #{duration} seconds"
+      end if @print_output
+    end
+
+    def log_to_db_with(log_entry, result = {})
+      log_entry.log_execution_for(state, timer_attributes.merge(result)) if @log_to_db
     end
   end
 end

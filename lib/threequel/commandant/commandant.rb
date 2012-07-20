@@ -1,3 +1,10 @@
+# based on the name of the class that the module is included within
+# read a file in a conventional/specified location
+# regex the file
+# load the regex results into a hash
+# for each key in the match, execute a define_method on the class using the hash key's value
+
+
 module Threequel
   module Commandant
     extend ActiveSupport::Concern
@@ -10,6 +17,14 @@ module Threequel
       delegate :sql_class_methods, :to => :sql_command_hash
 
       def sql_command_file_path
+        @sql_command_file_path || default_sql_command_file_path
+      end
+
+      def sql_command_file_path=(path)
+        @sql_command_file_path = path
+      end
+
+      def default_sql_command_file_path
         File.join(Rails.root, "db", "models", "#{self.name.underscore}.sql") # i.e. db/models/membership.sql
       end
 
@@ -44,10 +59,3 @@ module Threequel
     end
   end
 end
-
-# based on the name of the class that the module is included within
-  # read a file in a conventional/specified location
-  # regex the file
-  # load the regex results into a hash
-  # for each key in the match, execute a define_method on the class using the hash key's value
-

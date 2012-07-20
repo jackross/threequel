@@ -1,26 +1,32 @@
 module Threequel
   class Timer
-    attr_reader :started_at, :finished_at
+    attr_reader :started_at, :finished_at, :state
 
     def initialize(opts = {})
+      @state = :initialized
     end
 
-    def measure(name = "Anonymous Timer")
+    def clock(name = "Anonymous Timer")
       begin
         start
-        yield
+        result = yield
         stop
       rescue => ex
+        @state = :error
         puts "Error while executing '#{name}': '#{ex.message}'!"
       end
+      result
     end
 
     def start
+      @finished_at = nil
       @started_at = Time.now
+      @state = :executing
     end
 
     def stop
       @finished_at = Time.now
+      @state = :finished
     end
 
     def duration
@@ -32,17 +38,8 @@ module Threequel
     end
     
     def attributes
-      {:started_at => started_at, :finished_at => finished_at, :duration => duration}
+      { :started_at => started_at, :finished_at => finished_at, :duration => duration }
     end
-
-    # private
-    # def attribute=(attr, value)
-    #   @attributes[attr] = value
-    # end
-
-    # def attribute(attr)
-    #   @attributes[attr]
-    # end
 
   end
   
