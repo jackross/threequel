@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = Threequel::VERSION
   gem.add_development_dependency "minitest"
   gem.add_development_dependency "turn"
-  gem.add_development_dependency "ansi"
+  gem.add_development_dependency "mocha"
   gem.add_dependency "activerecord"
   gem.add_dependency "activesupport"
 end

@@ -6,20 +6,19 @@ module Threequel
       @print_output  = @opts[:print_output]
       @log_to_db     = @opts[:log_to_db]
       @timer         = Threequel::Timer.new
-      @rows_affected = -1
     end
     delegate :started_at, :finished_at, :duration, :state, :clock, :to => :@timer
     delegate :attributes, :to => :@timer, :prefix => :timer
 
-    def log(name, log_data = {})
-      log_entry = Threequel::LogEntry.new(log_data.merge(:name => name))
+    def log(name, log_data = {}, log_entry_klass = Threequel::LogEntry)
+      log_entry = log_entry_klass.new(log_data.merge(:name => name))
       result = clock(name) do
         print_output_for name
         log_to_db_with log_entry
         yield
       end
-      log_to_db_with log_entry, result
       print_output_for name
+      log_to_db_with log_entry, result
     end
 
     private
