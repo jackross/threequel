@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "threequel"
   gem.require_paths = ["lib"]
   gem.version       = Threequel::VERSION
+  gem.add_development_dependency "rake"
   gem.add_development_dependency "minitest"
   gem.add_development_dependency "turn"
   gem.add_development_dependency "mocha"
