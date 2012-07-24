@@ -18,7 +18,7 @@ module Threequel
       end
 
       def default_opts
-        { :log_to_db => true }
+        { :log_to_db => true, :print_output => true }
       end
 
       def code
@@ -39,7 +39,7 @@ module Threequel
 
       def sql_command_for(command, sql)
         SQL::Command.new(sql, command_name_for(command), @opts) do |config|
-          config.extend(Threequel::Logging) if @opts[:log_to_db]
+          config.extend(Threequel::Logging) if (@opts[:log_to_db] || @opts[:print_output])
         end
       end
 

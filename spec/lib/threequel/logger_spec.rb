@@ -2,11 +2,12 @@ require_relative '../../spec_helper'
 
 describe Threequel::Logger do
 
-  subject { Threequel::Logger.new }
-
   describe "logging" do
-    let(:log_data) { { :foo => "foo", :bar => "bar" } }
+    let(:opts) { { :log_to_db => true, :print_output => true } }
+    subject { Threequel::Logger.new(opts) }
+
     let(:name)     { "logging test" }
+    let(:log_data) { { :foo => "foo", :bar => "bar" } }
     let(:result)   { { :result => 42 } }
 
     it "calls new on log_entry" do

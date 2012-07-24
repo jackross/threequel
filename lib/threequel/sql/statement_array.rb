@@ -12,7 +12,7 @@ module Threequel
       def statements
         @statements ||= self.map.with_index do |statement, i|
           SQL::Statement.new(statement, "#{@name}[statement#{i}]", @opts) do |config|
-            config.extend(Threequel::Logging) if @opts[:log_to_db]
+            config.extend(Threequel::Logging) if (@opts[:log_to_db] || @opts[:print_output])
           end
         end
       end

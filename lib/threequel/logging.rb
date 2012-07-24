@@ -10,7 +10,7 @@ module Threequel
     end
 
     def log
-      Threequel::Logger.new(:print_output => true).log(name, attributes) do
+      Threequel::Logger.new(@opts).log(name, attributes) do
         yield
       end
     end
