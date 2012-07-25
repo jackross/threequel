@@ -106,6 +106,7 @@ describe Threequel::Timer do
       attributes.must_include(:started_at)
       attributes.must_include(:finished_at)
       attributes.must_include(:duration)
+      attributes.must_include(:stage)
     end
 
   end

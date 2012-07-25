@@ -16,6 +16,18 @@ module Threequel
     module ClassMethods
       delegate :sql_class_methods, :to => :sql_command_hash
 
+      def commandant_loggers
+        @commandant_loggers || default_commandant_loggers
+      end
+
+      def commandant_loggers=(loggers)
+        @commandant_loggers = [loggers].flatten
+      end
+
+      def default_commandant_loggers
+        [:db, :console]
+      end
+
       def sql_command_file_path
         @sql_command_file_path || default_sql_command_file_path
       end
@@ -29,7 +41,7 @@ module Threequel
       end
 
       def sql_command_hash
-        @sql_command_hash ||= SQL::CommandHash.new(sql_command_file_path, self.name)
+        @sql_command_hash ||= SQL::CommandHash.new(sql_command_file_path, self.name, { :loggers => commandant_loggers })
       end
 
       def sql_command_for(method)

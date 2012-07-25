@@ -5,10 +5,10 @@ module Threequel
 
       attr_reader :name
 
-      def initialize(unsanitized_sql, name = 'Anonymous', opts = {})
+      def initialize(unsanitized_sql, name = 'Anonymous Command', opts = {})
         @name            = name
         @opts            = opts.reverse_merge(default_opts)
-        @statement_array = SQL::StatementArray.new(unsanitized_sql, name, opts)
+        @statement_array = SQL::StatementArray.new(unsanitized_sql, name, @opts)
         yield self if block_given?
       end
       delegate :sql, :statements, :to => :@statement_array
@@ -25,6 +25,10 @@ module Threequel
 
       def attributes
         { :sql => sql, :command => @name, :statement => nil }
+      end
+
+      def inspect
+        sql
       end
 
       private

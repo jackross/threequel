@@ -6,7 +6,7 @@ module Threequel
       attr_reader :sql, :name, :rows_affected
       attr_accessor :command_name
 
-      def initialize(sql, name, command_name = nil, opts = {})
+      def initialize(sql, name = "Anonymous Statement", command_name = nil, opts = {})
         @sql, @name, @command_name = sql, name, command_name
         @opts = opts.reverse_merge(default_opts)
         yield self if block_given?

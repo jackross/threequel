@@ -6,7 +6,7 @@ module Threequel
         @unsanitized_sql, @name = unsanitized_sql, name
         @opts                   = opts.reverse_merge(default_opts)
         @statement_terminator   = @opts[:statement_terminator]
-        @loggers                = @opts[:loggers]
+        @loggers                = @opts[:loggers] || []
         setup!
       end
 
@@ -38,21 +38,16 @@ module Threequel
         @unsanitized_sql.split(@statement_terminator).each.with_index{|s, i| self[i] = s}
       end
 
-      def chomp_endings!
-        self.each(&:chomp!)
-      end
-
       def strip_whitespace!
         self.each(&:strip!)
       end
 
       def remove_empty_statements!
-        self.reject!(&:empty?).compact!
+        self.delete_if(&:empty?).delete_if(&:nil?)
       end
 
       def setup!
         split_on_terminator!
-        chomp_endings!
         strip_whitespace!
         remove_empty_statements!
       end

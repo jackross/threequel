@@ -11,8 +11,8 @@ describe Threequel::LoggingHandler do
     let(:result)           { { :result => 42 } }
     let(:timer_attributes) { { :att1 => :val1, :att2 => :val2 } }
 
-    it "interacts appropriately with the logger_klass" do
-      logger       = MiniTest::Mock.new
+    it "interacts appropriately with a Logger class" do
+      logger = MiniTest::Mock.new
 
       logger.expect :new, logger
       logger.expect :log, nil, [:executing, initial_log_data.merge(:name => name).merge(timer_attributes)]
@@ -33,7 +33,7 @@ describe Threequel::LoggingHandler do
         :result         => result[:result]
       }
       
-      logger_klass = Class.new do
+      logger = Class.new do
         attr_reader :attributes
 
         def initialize()
@@ -52,7 +52,7 @@ describe Threequel::LoggingHandler do
         end
       end
 
-      subject.register_logger logger_klass
+      subject.register_logger logger
       subject.handle_logging(name, initial_log_data){ result }[0].attributes.must_equal expected
 
     end
