@@ -4,6 +4,9 @@
 Commandant
 Objectify your SQL scripts.  Take blocks of SQL from an .sql script and turn them into class methods on your models/classes.
 
+include Threequel::Commandant
+
+
 Servant
 Run a series of co-dependant .sql scripts to perform tasks.
 
@@ -25,3 +28,6 @@ LogEntry
 Timer
 
 Logging
+Adds logging to any instance method.  By default adds logging to any method named execute_on.
+
+extend Threequel::Logging
