@@ -7,6 +7,7 @@ module Threequel
       def initialize(sql_command_file, model_name = 'AnonymousModel', opts = {})
         @sql_command_file, @model_name = sql_command_file, model_name
         @opts = opts.reverse_merge(default_opts)
+        @loggers = @opts[:loggers]
         setup!
       end
 
@@ -18,7 +19,7 @@ module Threequel
       end
 
       def default_opts
-        { :log_to_db => true, :print_output => true }
+        { :loggers => [:db, :console] }
       end
 
       def code
@@ -39,7 +40,10 @@ module Threequel
 
       def sql_command_for(command, sql)
         SQL::Command.new(sql, command_name_for(command), @opts) do |config|
-          config.extend(Threequel::Logging) if (@opts[:log_to_db] || @opts[:print_output])
+          unless @loggers.empty?
+            config.extend(Threequel::Logging)
+            config.add_logging_to :execute_on, *@loggers
+          end
         end
       end
 

@@ -4,15 +4,19 @@ module Threequel
 
       def initialize(unsanitized_sql, name = 'Anonymous SQL Block', opts = {})
         @unsanitized_sql, @name = unsanitized_sql, name
-        @opts = opts.reverse_merge(default_opts)
-        @statement_terminator = @opts[:statement_terminator]
+        @opts                   = opts.reverse_merge(default_opts)
+        @statement_terminator   = @opts[:statement_terminator]
+        @loggers                = @opts[:loggers]
         setup!
       end
 
       def statements
         @statements ||= self.map.with_index do |statement, i|
           SQL::Statement.new(statement, "#{@name}[statement#{i}]", @opts) do |config|
-            config.extend(Threequel::Logging) if (@opts[:log_to_db] || @opts[:print_output])
+            unless @loggers.empty?
+              config.extend(Threequel::Logging)
+              config.add_logging_to :execute_on, *@loggers
+            end
           end
         end
       end

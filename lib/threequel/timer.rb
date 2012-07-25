@@ -1,19 +1,19 @@
 module Threequel
   class Timer
-    attr_reader :started_at, :finished_at, :state
+    attr_reader :started_at, :finished_at, :stage
  
     def initialize(opts = {})
-      @state = :initialized
+      @stage = :initialized
     end
 
     def clock(name = "Anonymous Timer")
       begin
         start
-        @state = :executing
+        @stage = :executing
         result = yield
         stop
       rescue => ex
-        @state = :error
+        @stage = :error
         raise TimerException.new("Error while executing '#{name}': '#{ex.message}'!")
       end
       result
@@ -21,12 +21,12 @@ module Threequel
 
     def start
       @finished_at = nil
-      @state = :started
+      @stage = :started
       @started_at = Time.now
     end
 
     def stop
-      @state = :finished
+      @stage = :finished
       @finished_at = Time.now
     end
 
@@ -43,7 +43,7 @@ module Threequel
     end
     
     def attributes
-      { :started_at => started_at, :finished_at => finished_at, :duration => duration, :state => state }
+      { :started_at => started_at, :finished_at => finished_at, :duration => duration, :stage => stage }
     end
 
     def inspect

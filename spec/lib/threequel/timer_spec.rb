@@ -34,8 +34,8 @@ describe Threequel::Timer do
       subject.must_respond_to(:attributes)
     end
 
-    it "must have a state accessor" do
-      subject.must_respond_to(:state)
+    it "must have a stage accessor" do
+      subject.must_respond_to(:stage)
     end
 
   end
@@ -60,8 +60,8 @@ describe Threequel::Timer do
       subject.duration.must_be_nil
     end
 
-    it "must have a state of :started" do
-      subject.state.must_equal :started
+    it "must have a stage of :started" do
+      subject.stage.must_equal :started
     end
 
   end
@@ -85,8 +85,8 @@ describe Threequel::Timer do
       stop_return_value.must_equal finished_at
     end
 
-    it "must have a state of :finished" do
-      subject.state.must_equal :finished
+    it "must have a stage of :finished" do
+      subject.stage.must_equal :finished
     end
 
     specify "duration must be equal to the difference between start and finish" do
@@ -117,9 +117,9 @@ describe Threequel::Timer do
       subject.clock{ expected }.must_equal expected
     end
 
-    specify "state must equal :error if the code block raises an error" do
+    specify "stage must equal :error if the code block raises an error" do
       lambda{ subject.clock { raise } }.must_raise Threequel::Timer::TimerException
-      subject.state.must_equal :error
+      subject.stage.must_equal :error
     end
 
   end

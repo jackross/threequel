@@ -2,12 +2,13 @@
 # Stores data in the threequel.log_entries table.
 #
 module Threequel
-  class LogEntry < ActiveRecord::Base
-    self.table_name_prefix = "threequel."
+  class DBLoggerStorage < ActiveRecord::Base
+    TABLE_NAME = "threequel.log_entries"
+    self.table_name = TABLE_NAME
 
     def self.construct
       ActiveRecord::Migration.class_eval do
-        create_table Threequel::LogEntry.table_name do |t|
+        create_table TABLE_NAME do |t|
           t.string   :stage,         :null => false, :limit => 20
           t.string   :name,          :null => false, :limit => 128
           t.string   :command,       :null => false, :limit => 128
@@ -25,8 +26,13 @@ module Threequel
 
     def self.drop
       ActiveRecord::Migration.class_eval do
-        drop_table Threequel::LogEntry.table_name
+        drop_table TABLE_NAME
       end
+    end
+
+    def initialize(data = {})
+      super()
+      assign_attributes legal_attributes(data) 
     end
 
     # Public: Convenience method to save and update a log entry.
@@ -40,7 +46,11 @@ module Threequel
     #
     # Returns the Boolean result.    
     def log_execution_for(stage, data)
-      self.update_attributes data.merge(:stage => stage)
+      self.update_attributes legal_attributes(data.merge(:stage => stage))
+    end
+
+    def legal_attributes(data)
+      data.keep_if{|attr| self.has_attribute?(attr)}
     end
 
   end

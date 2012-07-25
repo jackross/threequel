@@ -7,7 +7,7 @@ module Threequel
       @log_to_db     = @opts[:log_to_db]
       @timer         = Threequel::Timer.new
     end
-    delegate :started_at, :finished_at, :duration, :state, :clock, :to => :@timer
+    delegate :started_at, :finished_at, :duration, :stage, :clock, :to => :@timer
     delegate :attributes, :to => :@timer, :prefix => :timer
 
     def log(name, log_data = {}, log_entry_klass = Threequel::LogEntry)
@@ -27,7 +27,7 @@ module Threequel
     end
 
     def print_output_for(name)
-      puts case state
+      puts case stage
         when :executing
           "-- Starting execution of #{name} at #{started_at}\n"
         when :finished
@@ -36,7 +36,7 @@ module Threequel
     end
 
     def log_to_db_with(log_entry, result = {})
-      log_entry.log_execution_for(state, timer_attributes.merge(result)) if @log_to_db
+      log_entry.log_execution_for(stage, timer_attributes.merge(result)) if @log_to_db
     end
   end
 end
