@@ -1,7 +1,7 @@
 module Threequel
   class LoggingHandler
 
-    def initialize(timer_klass = Threequel::Timer)
+    def initialize(timer_klass = Clockblock::Timer)
       @timer          = timer_klass.new
       @logger_klasses = []
       yield self if block_given?
