@@ -1,7 +1,7 @@
 require_relative './threequel/version'
 require 'active_record'
 require 'active_support'
-require_relative './threequel/timer'
+require 'clockblock'
 require_relative './threequel/sql/utils'
 require_relative './threequel/sql/statement_array'
 require_relative './threequel/loggers/console_logger'
