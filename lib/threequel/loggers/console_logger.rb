@@ -41,15 +41,15 @@ module Threequel
     end
 
     def duration_minutes_words
-      duration_minutes > 0 ? "#{duration_minutes} minutes" : nil
+      duration_minutes > 0 ? "#{duration_minutes} #{'minute'.pluralize(duration_minutes)}" : nil
     end
 
     def duration_seconds_words
-      duration_seconds > 0 ? "#{duration_seconds} seconds" : nil
+      duration_seconds > 0 ? "#{duration_seconds} 'second'.pluralize(duration_seconds)" : nil
     end
 
     def duration
-      [duration_minutes_words, duration_seconds_words].join(" and ")
+      [duration_minutes_words, duration_seconds_words].compact.join(" and ")
     end
   end
 end
