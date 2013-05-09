@@ -1,13 +1,13 @@
 module Threequel
   class ConsoleLogger
-    attr_reader :default_attributes
+    attr_reader :attributes
 
     def initialize
-      @default_attributes = {}
+      @attributes = {}
     end
 
-    def log(stage, attributes)
-      attributes.merge!(default_attributes)
+    def log(stage, logged_attributes)
+      @attributes.merge!(logged_attributes)
       puts case stage
         when :executing
           "-- Starting execution of #{attributes[:name]} at #{attributes[:started_at]}\n"
