@@ -9,10 +9,17 @@ module Threequel
     def log(stage, logged_attributes)
       @attributes.merge!(logged_attributes)
       puts case stage
+        when :started
         when :executing
           "-- Starting execution of #{attributes[:name]} at #{attributes[:started_at]}\n"
         when :finished
-          "-- Finishing execution of #{attributes[:name]} at #{attributes[:finished_at]} in #{attributes[:duration]} seconds (#{attributes[:rows_affected]} rows affected)"
+          if attributes[:rows_affected]
+            "-- Finishing execution of #{attributes[:name]} at #{attributes[:finished_at]} in #{attributes[:duration]} seconds (#{attributes[:rows_affected]} rows affected)"
+          else
+            "-- Finishing execution of #{attributes[:name]} at #{attributes[:finished_at]} in #{attributes[:duration]} seconds"
+          end
+        when :error
+          "An error occurred"
       end
     end
 
