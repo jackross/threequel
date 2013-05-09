@@ -45,7 +45,7 @@ module Threequel
     end
 
     def duration_seconds_words
-      duration_seconds > 0 ? "#{duration_seconds} 'second'.pluralize(duration_seconds)" : nil
+      duration_seconds > 0 ? "#{duration_seconds} #{'second'.pluralize(duration_seconds)}" : nil
     end
 
     def duration
