@@ -37,7 +37,7 @@ module Threequel
     end
 
     def duration_seconds
-      (attributes[:duration].to_f % 60).ceiling
+      (attributes[:duration].to_f % 60).ceil
     end
 
     def duration_minutes_words
