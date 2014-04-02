@@ -1,7 +1,7 @@
 require 'hirb'
-require "executioner/script"
-require "executioner/sorter"
-require "executioner/config_loader"
+require 'threequel/executioner/script'
+require 'threequel/executioner/sorter'
+require 'threequel/executioner/config_loader'
 
 module Threequel
   class Executioner
