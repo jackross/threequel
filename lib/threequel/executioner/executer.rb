@@ -16,6 +16,16 @@ module Threequel
          @client = Connection.new(env).client
        end
 
+       def execute(path)
+         script = Script.new(path)
+
+         command = SQL::Command.new(script.code, path, {}) do |config|
+           config.extend(Threequel::Logging)
+           config.add_logging_to :execute_on, :db, :console
+         end
+
+         command.execute_on(ActiveRecord::Base.connection)
+       end
 
        def execute_folder(folder_path, opts = {})
          exceptions = opts.delete(:except)
