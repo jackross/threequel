@@ -28,7 +28,6 @@ module Threequel
       def config
         @config ||= YAML.load_file(File.join(Rails.root, "db", "sql", @folder_path, "config.yml")).with_indifferent_access
       end
-
     end
   end
 end
