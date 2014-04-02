@@ -6,19 +6,15 @@ require 'threequel/executioner/config_loader'
 module Threequel
   class Executioner
     def self.execute_folder(folder_path)
-      self.new(Rails.env).execute_folder folder_path
+      self.new.execute_folder folder_path
     end
 
     def self.execute(file_path)
-      self.new(Rails.env).execute file_path
+      self.new.execute file_path
     end
 
     def connection
       ActiveRecord::Base.connection
-    end
-
-    def initialize(env)
-     @client = Connection.new(env).client
     end
 
     def execute(path)
