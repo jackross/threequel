@@ -21,4 +21,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "activerecord"
   gem.add_dependency "activesupport"
   gem.add_dependency "clockblock"
+  gem.add_runtime_dependency "tiny_tds"
+  gem.add_runtime_dependency "hirb"
 end
