@@ -24,7 +24,7 @@ module Threequel
         loggers.each{ |logger| logger.log stage, initial_log_data.merge(:name => name).merge(timer_attributes) }
         yield
       end
-      loggers.each{ |logger| logger.log stage, timer_attributes.merge(result) }
+      loggers.each{ |logger| logger.log stage, timer_attributes.merge(result: result) }
     end
 
   end
