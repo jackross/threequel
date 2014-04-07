@@ -36,7 +36,6 @@ module Threequel
         {}
       end
 
-    end    
-
+    end
   end
 end

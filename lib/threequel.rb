@@ -13,6 +13,7 @@ require 'threequel/sql/statement'
 require 'threequel/sql/command'
 require 'threequel/sql/command_hash'
 require 'threequel/commandant/commandant'
+require 'threequel/executioner'
 
 module Threequel
   # Your code goes here...
