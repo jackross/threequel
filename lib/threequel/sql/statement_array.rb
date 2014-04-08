@@ -56,8 +56,17 @@ module Threequel
         @unsanitized_sql.gsub!(regexp, '')
       end
 
-      def setup!
+      def strip_single_line_comments!
+        @unsanitized_sql.gsub!(/--.*$/, '')
+      end
+
+      def strip_comments!
         strip_multiline_comments!
+        strip_single_line_comments!
+      end
+
+      def setup!
+        strip_comments!
         split_on_terminator!
         remove_nil_statements!
         strip_whitespace!
