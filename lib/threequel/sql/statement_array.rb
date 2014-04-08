@@ -25,7 +25,7 @@ module Threequel
       def sql
         self.clone.push("").join("#{@statement_terminator}\n\n")
       end
-      
+
       def inspect
         statements
       end
@@ -51,7 +51,13 @@ module Threequel
         self.delete_if(&:empty?)
       end
 
+      def strip_multiline_comments!
+        regexp = /\/\*[^*]*\*+(?:[^*\/][^*]*\*+)*\//
+        @unsanitized_sql.gsub!(regexp, '')
+      end
+
       def setup!
+        strip_multiline_comments!
         split_on_terminator!
         remove_nil_statements!
         strip_whitespace!
