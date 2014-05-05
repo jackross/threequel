@@ -11,7 +11,7 @@ module Threequel
       Threequel::LoggingHandler.new do |config|
         config.register_logger Threequel::DBLogger          if loggers.include?(:db)
         config.register_logger Threequel::ConsoleLogger     if loggers.include?(:console)
-        config.register_logger Threequel::CheetahMailLogger if loggers.include?(:cheetah)
+        config.register_logger Threequel::CheetahMailLogger if loggers.include?(:cheetah_mail)
       end
     end
 
