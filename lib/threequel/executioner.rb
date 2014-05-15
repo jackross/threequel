@@ -13,6 +13,10 @@ module Threequel
       self.new.execute file_path
     end
 
+    def self.execute_folders(folders)
+      self.new.execute_folders folders
+    end
+
     def connection
       ActiveRecord::Base.connection
     end
@@ -32,6 +36,17 @@ module Threequel
       exceptions = opts.delete(:except)
       (ConfigLoader.new(folder_path).tsorted_scripts - [exceptions].flatten).each do |script|
         execute File.join(folder_path, script)
+      end
+    end
+
+    def execute_folders(folders)
+      folders.each do |folder|
+        begin
+          execute_folder(folder)
+        rescue Exception => ex
+          puts ex.message
+          puts ex.backtrace.join("\n")
+        end
       end
     end
   end
