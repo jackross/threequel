@@ -19,7 +19,7 @@ module Threequel
           SUCCESS.merge(:rows_affected => @rows_affected)
         rescue => ex
           message = "Error while executing '#{@name}': '#{ex.message}'!"
-          throw :failure, { :message => message, :status => :failure }
+          { :message => message, :status => :failure }
         end
       end
 
