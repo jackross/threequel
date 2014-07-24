@@ -2,6 +2,7 @@ module Threequel
   module SQL
     class Statement
       SUCCESS = { :message => 'Statement executed successfully', :status => :success }
+      FAILURE = { :message => nil, :status => :failure }
 
       attr_reader :sql, :name, :rows_affected
       attr_accessor :command_name
@@ -19,7 +20,7 @@ module Threequel
           SUCCESS.merge(:rows_affected => @rows_affected)
         rescue => ex
           message = "Error while executing '#{@name}': '#{ex.message}'!"
-          throw :failure, { :message => message, :status => :failure }
+          FAILURE.merge(:message => message)
         end
       end
 
