@@ -25,7 +25,10 @@ module Threequel
         yield
       end
       loggers.each{ |logger| logger.log stage, initial_log_data.merge(timer_attributes).merge(result) }
+
       raise result[:message] if result[:status] == :failure
+
+      result
     end
 
   end
