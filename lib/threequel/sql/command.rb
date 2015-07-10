@@ -2,7 +2,6 @@ module Threequel
   module SQL
     class Command
       SUCCESS = { :message => 'Command executed successfully', :status => :success }
-      FAILURE = { :message => 'Command Failed', :status => :failure }
       attr_reader :name
 
       def initialize(unsanitized_sql, name = 'Anonymous Command', opts = {})
@@ -17,7 +16,8 @@ module Threequel
         statements.each do |statement|
           statement.command_name = @name
           result = statement.execute_on connection
-          return FAILURE if result[:status] == :failure
+
+          return result if result[:status] == :failure
         end
         SUCCESS
       end
