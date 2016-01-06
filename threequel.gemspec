@@ -18,6 +18,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "minitest"
   gem.add_development_dependency "turn"
   gem.add_development_dependency "mocha"
+  gem.add_development_dependency 'rubocop'
   gem.add_dependency "activerecord"
   gem.add_dependency "activesupport"
   gem.add_dependency "clockblock"
