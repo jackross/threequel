@@ -18,18 +18,23 @@ module Threequel
     end
 
     def connection
-      ActiveRecord::Base.connection
+      ActiveRecord::Base.connection_pool.checkout
     end
 
     def execute(path)
-      script = Script.new(path)
+      script             = Script.new(path)
+      current_connection = connection
 
       command = SQL::Command.new(script.code, path, {}) do |config|
         config.extend(Threequel::Logging)
         config.add_logging_to :execute_on, :db, :console
       end
 
-      command.execute_on(connection)
+      command.execute_on(current_connection)
+
+      current_connection.reconnect!
+
+      ActiveRecord::Base.connection_pool.checkin(current_connection)
     end
 
     def execute_folder(folder_path, opts = {})
