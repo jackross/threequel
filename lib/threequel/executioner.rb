@@ -17,19 +17,26 @@ module Threequel
       self.new.execute_folders folders
     end
 
-    def connection
-      ActiveRecord::Base.connection
+   def with_connection(&block)
+      connection = ActiveRecord::Base.connection_pool.checkout
+
+      yield connection
+    ensure
+      connection.reconnect!
+      ActiveRecord::Base.connection_pool.checkin(connection)
     end
 
     def execute(path)
       script = Script.new(path)
 
-      command = SQL::Command.new(script.code, path, {}) do |config|
-        config.extend(Threequel::Logging)
-        config.add_logging_to :execute_on, :db, :console
-      end
+      with_connection do |current_connection|
+        command = SQL::Command.new(script.code, path, {}) do |config|
+          config.extend(Threequel::Logging)
+          config.add_logging_to :execute_on, :db, :console
+        end
 
-      command.execute_on(connection)
+        command.execute_on(current_connection)
+      end
     end
 
     def execute_folder(folder_path, opts = {})
